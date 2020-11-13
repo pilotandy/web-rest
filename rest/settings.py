@@ -135,7 +135,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Users
-
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # REST Framework
@@ -145,6 +144,14 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.pilotandy.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', None)
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', None)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # UPLOAD SIZES
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024  # your size limit in bytes

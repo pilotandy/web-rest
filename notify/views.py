@@ -14,6 +14,7 @@ from googlevoice import Voice
 
 import json
 import logging
+import traceback
 
 logger = logging.getLogger('django')
 
@@ -64,6 +65,7 @@ def SendEmail(user, subject, message):
         msg.content_subtype = "html"  # Main content is now text/html
         msg.send()
     except:
+        print("Exception: " + traceback.format_exc())
         pass
 
 
