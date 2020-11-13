@@ -37,4 +37,4 @@ class BasicAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'firstname', 'lastname', 'groups')
+        fields = ('id', 'firstname', 'lastname', 'groups', 'data')

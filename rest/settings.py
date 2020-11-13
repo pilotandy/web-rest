@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_cron',
     'schedule',
     'aircraft',
+    'notify',
     'users',
 ]
 
@@ -145,6 +146,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+# UPLOAD SIZES
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024  # your size limit in bytes
 
 # Cron jobs
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 5

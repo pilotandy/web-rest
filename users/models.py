@@ -55,7 +55,7 @@ class CustomUser(AbstractBaseUser):
     firstname = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
     is_admin = models.BooleanField(default=False)
-    groups = models.ManyToManyField(CustomGroup)
+    groups = models.ManyToManyField(CustomGroup, blank=True)
     data = JSONField(default=dict, blank=True)
     invoices = JSONField(default=list, blank=True)
     payments = JSONField(default=list, blank=True)

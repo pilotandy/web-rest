@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from .models import CustomUser
 from .serializers import FullAccountSerializer, BasicAccountSerializer
 
-import logging
+from .image import ImageTool
 
+import logging
 logger = logging.getLogger('django')
 
 
@@ -33,6 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_detail_class(data=request.data)
+        serializer.initial_data['data']['image'] = newImage(user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         headers = self.get_success_headers(serializer.data)
@@ -42,6 +44,14 @@ class UserViewSet(viewsets.ModelViewSet):
         user = self.get_object()
         serializer = FullAccountSerializer(
             user, data=request.data, partial=True)
+
+        try:
+            serializer.initial_data['data']['image'] = ImageTool.setProfileImage(
+                serializer.initial_data['data']['image'])
+        except:
+            serializer.initial_data['data']['image'] = ImageTool.genProfileImage(
+                user.firstname, user.lastname)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
