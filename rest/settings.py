@@ -178,3 +178,11 @@ LOGGING = {
         },
     },
 }
+
+
+# TWILIO AUTHENTICATION
+# Your Account SID from twilio.com/console
+TWILIO_SID = os.environ.get('TWILIO_SID', None)
+# Your Auth Token from twilio.com/console
+TWILIO_TOKEN  = os.environ.get('TWILIO_TOKEN', None)
+TWILIO_FROM = os.environ.get('TWILIO_FROM', None)

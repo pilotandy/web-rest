@@ -3,20 +3,28 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.conf import settings
 
-from .models import Notification
+from .models import NotifyType, Notification
+from .serializers import NotifyTypeSerializer
 from .serializers import NotificationSerializer
 
 from django.contrib.auth import get_user_model
 from django.core.mail import EmailMessage
 
-from googlevoice import Voice
+from twilio.rest import Client
 
 import json
 import logging
 import traceback
 
 logger = logging.getLogger('django')
+
+
+class NotifyTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = NotifyTypeSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = NotifyType.objects.all()
 
 
 class NotificationViewSet(viewsets.ModelViewSet):
@@ -42,35 +50,38 @@ class NotificationViewSet(viewsets.ModelViewSet):
         return query_set
 
 
-def SendNotification(users, subject, message):
-    print(users)
+def SendNotification(evt_code, users, subject, message):
     for user in users:
         n = Notification.objects.create(
             owner=user, title=subject, text=message)
         n.save()
 
         # Distribute
-        SendEmail(user, subject, message)
-        # SendSms(user, subject, message)
+        evt = user.notifications.get(evt_code, None)
+        if(evt and evt['email']):
+            SendEmail(user, subject, message)
+        if(evt and evt['sms']):
+            SendSms(user, subject, message)
 
 
 def SendEmail(user, subject, message):
     try:
-        print(user.data['notify']['email'])
-        if(user.data['notify']['email']):
-            print("sending email to " + str(user))
-            from_email = 'PilotAndy Aviation <automated@pilotandy.com>'
-            msg = EmailMessage(subject, message, from_email, [
-                str(user)], cc=['andy@pilotandy.com'])
+        from_email = 'PilotAndy Aviation <automated@pilotandy.com>'
+        msg = EmailMessage(subject, message, from_email, [
+            str(user)], cc=['andy@pilotandy.com'])
         msg.content_subtype = "html"  # Main content is now text/html
         msg.send()
     except:
-        print("Exception: " + traceback.format_exc())
-        pass
+        print(traceback.format_exc())
 
 
 def SendSms(user, subject, message):
-    if(user.data['notify']['sms']):
-        text = subject + "\n" + message
-        voice = Voice()
-        voice.send_sms(user.data['phone'], text)
+    try:
+        client = Client(settings.TWILIO_SID, settings.TWILIO_TOKEN)
+        msg = client.messages.create(
+            to=user.data['phone'], 
+            from_= settings.TWILIO_FROM,
+            body=message)
+    except:
+        print(traceback.format_exc())
+

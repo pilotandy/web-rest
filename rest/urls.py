@@ -22,12 +22,15 @@ from users.views import UserViewSet
 from aircraft.views import AircraftView
 from schedule.views import EventViewSet
 from notify.views import NotificationViewSet
+from notify.views import NotifyTypeViewSet
 # from flight.views import NearestView, RouteView, ChartViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'event', EventViewSet)
+router.register(r'notify/types', NotifyTypeViewSet)
 router.register(r'notify', NotificationViewSet)
+
 # router.register(r'flight/chart', ChartViewSet)
 
 urlpatterns = [

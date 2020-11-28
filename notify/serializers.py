@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import Notification
+from .models import NotifyType, Notification
+
+
+class NotifyTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = NotifyType
+        fields = ('sid', 'title', 'description')
 
 
 class NotificationSerializer(serializers.ModelSerializer):

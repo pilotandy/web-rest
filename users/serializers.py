@@ -26,7 +26,7 @@ class FullAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'email', 'password', 'firstname',
-                  'lastname', 'is_admin', 'groups', 'data', 'invoices', 'payments')
+                  'lastname', 'is_admin', 'groups', 'data', 'invoices', 'payments', 'notifications')
 
 
 class BasicAccountSerializer(serializers.ModelSerializer):

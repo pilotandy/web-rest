@@ -23,7 +23,10 @@ logger = logging.getLogger('django')
 
 
 def convert_to_localtime(utctime):
-    utctime = parse_datetime(utctime).astimezone(timezone.utc)
+    try:
+        utctime = parse_datetime(utctime).astimezone(timezone.utc)
+    except:
+        pass
     fmt = '%A %B %d, %Y at %l:%M %p %Z'
     utc = utctime.replace(tzinfo=pytz.UTC)
     localtz = utc.astimezone(pytz.timezone('US/Central'))
@@ -83,12 +86,33 @@ class EventViewSet(viewsets.ModelViewSet):
                 if r > 1000:
                     event_type = ' flight' + event_type
                 else:
-                    event_type = event_type + ' lesson'
                     cfi = get_user_model().objects.get(pk=r)
-                    users.append(cfi)
+                    if(cfi not in users):
+                        event_type = event_type + ' lesson'
+                        users.append(cfi)
 
             message = f"You have a{event_type} on " + start
-            SendNotification(
-                users, 'New Scheduled Event', message)
+            SendNotification('+event',
+                users, 'Scheduled Event', message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        try:
+            event = Event.objects.get(pk=pk)
+            if(event is not None):
+                users = [event.owner]
+                for r in event.data['resources']:
+                    if r < 1000:
+                        cfi = get_user_model().objects.get(pk=r)
+                        if(cfi not in users):
+                            users.append(cfi)
+                event.delete()
+                start = convert_to_localtime(event.start)
+                message = f"Your appointment on {start} has been cancelled."
+                SendNotification('-event',
+                    users, 'Cancelled Event', message)
+                return Response(None, status=status.HTTP_204_NO_CONTENT)
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)

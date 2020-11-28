@@ -59,6 +59,7 @@ class CustomUser(AbstractBaseUser):
     data = JSONField(default=dict, blank=True)
     invoices = JSONField(default=list, blank=True)
     payments = JSONField(default=list, blank=True)
+    notifications = JSONField(default=dict, blank=True)
 
     objects = CustomUserManager()
 
