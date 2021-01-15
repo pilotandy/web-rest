@@ -34,7 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_detail_class(data=request.data)
-        serializer.initial_data['data']['image'] = newImage(user)
+        serializer.initial_data['data']['image'] = ImageTool.genProfileImage(request.data['firstname'], request.data['lastname'])
         serializer.is_valid(raise_exception=True)
         serializer.save()
         headers = self.get_success_headers(serializer.data)
