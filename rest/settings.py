@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'pilotandy',
         'USER': os.environ.get('PILOTANDY_USER', None),
         'PASSWORD': os.environ.get('PILOTANDY_PASSWORD', None),
-        'HOST': 'localhost',
+        'HOST': os.environ.get('PILOTANDY_DB', None),
         'PORT': '5432',
     }
 }
