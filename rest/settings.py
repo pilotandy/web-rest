@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_cron',
     'schedule',
     'aircraft',
+    'flight',
     'notify',
     'users',
 ]
