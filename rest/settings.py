@@ -190,4 +190,4 @@ TWILIO_FROM = os.environ.get('TWILIO_FROM', None)
 
 # SQUAREUP
 SQUAREUP_TOKEN = os.environ.get('SQUAREUP_TOKEN', None)
-SQUAREUP_ENV = os.environ.get('SQUAREUP_TOKEN', None)
+SQUAREUP_ENV = os.environ.get('SQUAREUP_ENV', None)
