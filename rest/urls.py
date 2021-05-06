@@ -23,6 +23,7 @@ from aircraft.views import AircraftView
 from schedule.views import EventViewSet
 from notify.views import NotificationViewSet
 from notify.views import NotifyTypeViewSet
+from payment.views import PaymentView
 # from flight.views import NearestView, RouteView, ChartViewSet
 
 router = routers.DefaultRouter()
@@ -43,6 +44,8 @@ urlpatterns = [
     # path('api/flight/route/', RouteView.as_view()),
     # path('api/flight/route/<pk>/', RouteView.as_view()),
     # path('api/flight/nearest/', NearestView.as_view()),
+
+    path('api/payment/', PaymentView.as_view()),
 
     path('admin/', admin.site.urls),
     path('jwt/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
