@@ -57,6 +57,7 @@ class CustomUser(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     groups = models.ManyToManyField(CustomGroup, blank=True)
     data = JSONField(default=dict, blank=True)
+    private = JSONField(default=dict, blank=True)
     invoices = JSONField(default=list, blank=True)
     payments = JSONField(default=list, blank=True)
     notifications = JSONField(default=dict, blank=True)

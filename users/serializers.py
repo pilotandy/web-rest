@@ -11,6 +11,7 @@ class FullAccountSerializer(serializers.ModelSerializer):
             firstname=validated_data['firstname'],
             lastname=validated_data['lastname'],
             data=validated_data['data'],
+            private=validated_data['private'],
             invoices=validated_data['invoices'],
             payments=validated_data['payments']
         )
@@ -26,7 +27,7 @@ class FullAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'email', 'password', 'firstname',
-                  'lastname', 'is_admin', 'groups', 'data', 'invoices', 'payments', 'notifications')
+                  'lastname', 'is_admin', 'groups', 'data', 'private', 'invoices', 'payments', 'notifications')
 
 
 class BasicAccountSerializer(serializers.ModelSerializer):
