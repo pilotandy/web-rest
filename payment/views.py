@@ -52,7 +52,7 @@ class PaymentView(APIView):
                     a = float(req.get('amount'))
                     ct = "${:,.2f}".format(t)
                     ca = "${:,.2f}".format(a)
-                    message = f'Thank you for your payment of {ct}! {ca} has been applied to your account.'
+                    message = f'Thank you for your payment of {ct}!<br/>{ca} has been applied to your account.'
                     from_email = 'PilotAndy Aviation <automated@pilotandy.com>'
                     msg = EmailMessage(subject, message, from_email, [
                         str(user)], bcc=['andy@pilotandy.com'])

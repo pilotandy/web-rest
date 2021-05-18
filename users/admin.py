@@ -17,7 +17,7 @@ class CustomUserAdmin(BaseUserAdmin):
         (None, {'fields': ('email', 'password',)}),
         ('Personal info', {'fields': ('firstname', 'lastname',)}),
         ('Permissions', {'fields': ('is_admin',
-                                    'groups', 'data', 'invoices', 'payments', 'notifications')}),
+                                    'groups', 'data', 'private', 'invoices', 'payments', 'notifications')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
